@@ -657,6 +657,6 @@ Content-Type: application/json
 
 Trabajo mediante Pull Requests con título claro y descripción detallada (qué cambia, por qué, impacto) y referencia a la historia/ticket.
 
-- **PR-1 — Entrega 1: Documentación técnica.** Rama `feature-entrega1-AFE`. Incluye `README.md` (ficha, producto, arquitectura, modelo de datos, API, historias y tickets) y `prompts.md`. _[Pendiente: enlace al PR — se añade al abrirlo.]_
+- **PR-1 — Entrega 1: Documentación técnica.** Rama `feature-entrega1-AFE`. Incluye `README.md` (ficha, producto, arquitectura, modelo de datos, API, historias y tickets) y `prompts.md`. PR: https://github.com/albertofojo/AI4Devs-finalproject/pull/1
 - **PR-2 — Entrega 2: MVP funcional.** _[Pendiente]_
 - **PR-3 — Entrega final.** _[Pendiente]_
