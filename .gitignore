@@ -1,0 +1,38 @@
+# ---- Python / FastAPI ----
+backend/.venv/
+**/__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+*.sqlite3
+*.db
+
+# ---- Entornos y secretos ----
+.env
+.env.*
+!.env.example
+
+# ---- Flutter / Dart ----
+frontend/.dart_tool/
+frontend/.flutter-plugins
+frontend/.flutter-plugins-dependencies
+frontend/build/
+frontend/.pub-cache/
+frontend/.pub/
+frontend/ios/Pods/
+frontend/**/GeneratedPluginRegistrant.*
+
+# ---- IDE / OS ----
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# ---- Node (herramientas de test E2E, si aplica) ----
+node_modules/
+playwright-report/
+test-results/
