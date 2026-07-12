@@ -62,6 +62,17 @@ def create_setlist(
     return _read(session, setlist)
 
 
+@group_router.get("/{group_id}/setlists", response_model=list[SetlistRead])
+def list_setlists(
+    group: Group = Depends(require_group),
+    session: Session = Depends(get_session),
+) -> list[SetlistRead]:
+    setlists = session.exec(
+        select(Setlist).where(Setlist.group_id == group.id).order_by(Setlist.created_at)
+    ).all()
+    return [_read(session, s) for s in setlists]
+
+
 @setlist_router.get("/{setlist_id}", response_model=SetlistRead)
 def get_setlist(
     setlist_id: str,

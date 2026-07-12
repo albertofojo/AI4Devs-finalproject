@@ -91,6 +91,24 @@ def test_full_mvp_flow(client, alice, bob):
     assert detail["my_attendance"] == "confirmed"
 
 
+def test_list_setlists_and_rehearsals(client, alice):
+    group_id = client.post(
+        "/api/groups", headers=alice, json={"name": "G", "type": "banda"}
+    ).json()["id"]
+    client.post(
+        f"/api/groups/{group_id}/setlists", headers=alice, json={"name": "S1"}
+    )
+    client.post(
+        f"/api/groups/{group_id}/rehearsals",
+        headers=alice,
+        json={"title": "R1", "starts_at": "2026-08-10T18:00:00Z"},
+    )
+    setlists = client.get(f"/api/groups/{group_id}/setlists", headers=alice).json()
+    rehearsals = client.get(f"/api/groups/{group_id}/rehearsals", headers=alice).json()
+    assert len(setlists) == 1 and setlists[0]["name"] == "S1"
+    assert len(rehearsals) == 1 and rehearsals[0]["title"] == "R1"
+
+
 def test_outsider_cannot_access_group(client, alice, bob):
     group_id = client.post(
         "/api/groups", headers=alice, json={"name": "Privado", "type": "banda"}

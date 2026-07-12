@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visor de partitura — XANEE</title>
+  <!-- OpenSheetMusicDisplay desde CDN (renderizado de MusicXML) -->
+  <script src="https://cdn.jsdelivr.net/npm/opensheetmusicdisplay@1.8.9/build/opensheetmusicdisplay.min.js"></script>
+  <style>
+    html, body { margin: 0; padding: 0; font-family: system-ui, sans-serif; background: #fff; }
+    #status { padding: 16px; color: #555; }
+    #osmd { padding: 8px 16px 40px; }
+    .error { color: #c0392b; }
+  </style>
+</head>
+<body>
+  <div id="status">Cargando partitura…</div>
+  <div id="osmd"></div>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const src = params.get('src');
+    const statusEl = document.getElementById('status');
+
+    async function render() {
+      if (!src) {
+        statusEl.innerHTML = '<span class="error">No se indicó ninguna partitura.</span>';
+        return;
+      }
+      try {
+        const osmd = new opensheetmusicdisplay.OpenSheetMusicDisplay('osmd', {
+          autoResize: true,
+          backend: 'svg',
+          drawTitle: true,
+        });
+        // OSMD acepta una URL o el contenido XML. Cargamos la URL directamente.
+        await osmd.load(decodeURIComponent(src));
+        await osmd.render();
+        statusEl.style.display = 'none';
+      } catch (e) {
+        console.error(e);
+        statusEl.innerHTML = '<span class="error">No se pudo renderizar la partitura. ' +
+          'Comprueba que el fichero es MusicXML válido y accesible.</span>' +
+          '<br/><small>' + (e && e.message ? e.message : e) + '</small>';
+      }
+    }
+    render();
+  </script>
+</body>
+</html>

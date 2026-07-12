@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session, select
 
-from app.api.deps import get_membership, require_group_admin
+from app.api.deps import get_membership, require_group, require_group_admin
 from app.core.security import get_current_user
 from app.db.session import get_session
 from app.models import (
@@ -63,6 +63,20 @@ def create_rehearsal(
     session.commit()
     session.refresh(rehearsal)
     return _detail(session, rehearsal, user.id)
+
+
+@group_router.get("/{group_id}/rehearsals", response_model=list[RehearsalDetail])
+def list_rehearsals(
+    group: Group = Depends(require_group),
+    user: User = Depends(get_current_user),
+    session: Session = Depends(get_session),
+) -> list[RehearsalDetail]:
+    rehearsals = session.exec(
+        select(Rehearsal)
+        .where(Rehearsal.group_id == group.id)
+        .order_by(Rehearsal.starts_at)
+    ).all()
+    return [_detail(session, r, user.id) for r in rehearsals]
 
 
 @rehearsal_router.get("/{rehearsal_id}", response_model=RehearsalDetail)

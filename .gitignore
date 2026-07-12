@@ -36,3 +36,6 @@ Thumbs.db
 node_modules/
 playwright-report/
 test-results/
+
+# ---- build web output ----
+frontend/build/
