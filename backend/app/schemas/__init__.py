@@ -1,0 +1,43 @@
+"""DTOs Pydantic (request/response) del API XANEE."""
+
+from app.schemas.dtos import (
+    AttendanceRead,
+    AttendanceSummary,
+    AttendanceWrite,
+    GroupCreate,
+    GroupRead,
+    InvitationCreate,
+    InvitationRead,
+    MeUpdate,
+    RehearsalCreate,
+    RehearsalDetail,
+    RehearsalRead,
+    ScoreCreate,
+    ScoreRead,
+    SetlistCreate,
+    SetlistItemCreate,
+    SetlistItemRead,
+    SetlistRead,
+    UserRead,
+)
+
+__all__ = [
+    "UserRead",
+    "MeUpdate",
+    "GroupCreate",
+    "GroupRead",
+    "InvitationCreate",
+    "InvitationRead",
+    "ScoreCreate",
+    "ScoreRead",
+    "SetlistCreate",
+    "SetlistRead",
+    "SetlistItemCreate",
+    "SetlistItemRead",
+    "RehearsalCreate",
+    "RehearsalRead",
+    "RehearsalDetail",
+    "AttendanceWrite",
+    "AttendanceRead",
+    "AttendanceSummary",
+]
