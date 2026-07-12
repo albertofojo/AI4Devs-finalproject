@@ -658,5 +658,10 @@ Content-Type: application/json
 Trabajo mediante Pull Requests con título claro y descripción detallada (qué cambia, por qué, impacto) y referencia a la historia/ticket.
 
 - **PR-1 — Entrega 1: Documentación técnica.** Rama `feature-entrega1-AFE`. Incluye `README.md` (ficha, producto, arquitectura, modelo de datos, API, historias y tickets) y `prompts.md`. PR: https://github.com/albertofojo/AI4Devs-finalproject/pull/1
-- **PR-2 — Entrega 2: MVP funcional.** _[Pendiente]_
-- **PR-3 — Entrega final.** _[Pendiente]_
+- **PR-2 — Entrega 2: MVP funcional.** Rama `feature-entrega2-AFE`. Backend FastAPI
+  (API REST del flujo HU-01..HU-06, autenticación con JWT de Supabase, 9 modelos +
+  migración Alembic, 14 tests pytest) y frontend Flutter Web (auth, grupos,
+  invitaciones, partituras con visor MusicXML/OpenSheetMusicDisplay, setlists, ensayos
+  y asistencia), más CI (GitHub Actions) y test E2E del flujo principal. _[URL del PR pendiente de publicar]_
+- **PR-3 — Entrega final.** Rama `finalproject-AFE`. Despliegue en URL pública
+  (API en Render, Web en Firebase/Vercel, datos en Supabase) y documentación cerrada. _[Pendiente]_
