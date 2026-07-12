@@ -662,6 +662,6 @@ Trabajo mediante Pull Requests con título claro y descripción detallada (qué 
   (API REST del flujo HU-01..HU-06, autenticación con JWT de Supabase, 9 modelos +
   migración Alembic, 14 tests pytest) y frontend Flutter Web (auth, grupos,
   invitaciones, partituras con visor MusicXML/OpenSheetMusicDisplay, setlists, ensayos
-  y asistencia), más CI (GitHub Actions) y test E2E del flujo principal. _[URL del PR pendiente de publicar]_
+  y asistencia), más CI (GitHub Actions) y test E2E del flujo principal. PR: https://github.com/albertofojo/AI4Devs-finalproject/pull/2
 - **PR-3 — Entrega final.** Rama `finalproject-AFE`. Despliegue en URL pública
   (API en Render, Web en Firebase/Vercel, datos en Supabase) y documentación cerrada. _[Pendiente]_
