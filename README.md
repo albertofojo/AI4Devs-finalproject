@@ -669,5 +669,9 @@ Trabajo mediante Pull Requests con título claro y descripción detallada (qué 
   migración Alembic, 14 tests pytest) y frontend Flutter Web (auth, grupos,
   invitaciones, partituras con visor MusicXML/OpenSheetMusicDisplay, setlists, ensayos
   y asistencia), más CI (GitHub Actions) y test E2E del flujo principal. PR: https://github.com/albertofojo/AI4Devs-finalproject/pull/2
-- **PR-3 — Entrega final.** Rama `finalproject-AFE`. Despliegue en URL pública
-  (API en Render, Web en Firebase/Vercel, datos en Supabase) y documentación cerrada. _[Pendiente]_
+- **PR-3 — Entrega final.** Rama `finalproject-AFE` (release `v1.0-final-AFE`). MVP
+  desplegado y accesible públicamente: **web** https://xanee-afe.vercel.app (Vercel),
+  **API** https://xanee-api.onrender.com (Render, Docker) y **datos/auth/storage** en
+  Supabase. Flujo E2E (HU-01..HU-06) funcionando de principio a fin, con tests
+  (backend pytest + E2E de UI), CI (GitHub Actions) y documentación cerrada
+  (`README.md` + `prompts.md`).
