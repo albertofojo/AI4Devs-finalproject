@@ -96,7 +96,12 @@ Flujo principal del MVP (recorrido del usuario):
                  [Visor MusicXML: ve y estudia su partitura]
 ```
 
-> _Nota para la Entrega final: incluir capturas / vídeo breve (2–3 min) del flujo en funcionamiento, tal y como recomienda la guía._
+**Demo guiada con capturas:** ver [`docs/demo.md`](docs/demo.md) — recorrido paso a paso del
+flujo E2E (login → grupo → partitura → setlist → ensayo → asistencia → visor MusicXML) con
+capturas de cada pantalla (`docs/screenshots/`), y un guion para el vídeo breve de 2–3 min.
+
+![Detalle del ensayo con repertorio y asistencia](docs/screenshots/07_asistencia_confirmada.png)
+![Visor MusicXML](docs/screenshots/08_visor_musicxml.png)
 
 ### 1.4. Instrucciones de instalación
 

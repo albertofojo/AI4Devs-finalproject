@@ -46,6 +46,6 @@ jobs:
       - name: Análisis estático
         run: flutter analyze
       - name: Tests
-        run: flutter test
+        run: flutter test --exclude-tags golden   # las capturas (golden) se regeneran manualmente
       - name: Build web
         run: flutter build web --release --no-tree-shake-icons

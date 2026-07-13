@@ -1,0 +1,6 @@
+# Declaración de etiquetas de test. La etiqueta `golden` marca los tests de
+# captura de pantalla (screenshots_test.dart). El CI los excluye con
+# `--exclude-tags golden` porque el renderizado varía por plataforma; se
+# regeneran manualmente con `flutter test --update-goldens test/screenshots_test.dart`.
+tags:
+  golden:

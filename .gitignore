@@ -16,6 +16,7 @@ htmlcov/
 .env.*
 !.env.example
 frontend/dart_defines.json
+frontend/dart_defines.prod.json
 
 # ---- Flutter / Dart ----
 frontend/.dart_tool/
