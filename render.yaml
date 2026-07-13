@@ -1,0 +1,26 @@
+# Blueprint de despliegue en Render para el backend XANEE.
+# Crea un servicio web a partir del Dockerfile del backend. Las variables marcadas
+# como sync:false se rellenan en el panel de Render (secretos de Supabase).
+services:
+  - type: web
+    name: xanee-api
+    runtime: docker
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_JWT_SECRET
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: SUPABASE_STORAGE_BUCKET
+        value: scores
+      - key: CORS_ORIGINS
+        sync: false

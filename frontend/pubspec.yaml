@@ -1,0 +1,30 @@
+name: xanee_frontend
+description: "XANEE — espacio de trabajo para agrupaciones musicales (Flutter Web)."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  supabase_flutter: ^2.8.0     # Auth + Storage
+  http: ^1.2.2                 # llamadas al backend FastAPI
+  go_router: ^14.6.2           # routing declarativo con guardas de auth
+  provider: ^6.1.2             # estado (ChangeNotifier)
+  intl: ^0.20.1                # formateo de fechas
+  file_picker: ^8.1.6          # selector de fichero para subir partituras
+  web: ^1.1.0                  # interop DOM para el visor MusicXML (OSMD)
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
