@@ -31,11 +31,17 @@ XANEE es un **espacio de trabajo colaborativo para agrupaciones musicales** (ban
 
 ### 0.4. URL del proyecto
 
-_[Pendiente: URL pública del despliegue — se publicará en la Entrega final. Frontend Flutter Web en Firebase Hosting/Vercel; API FastAPI en Render/Cloud Run.]_
+- **Aplicación web (Flutter Web, Vercel):** https://xanee-afe.vercel.app
+- **API (FastAPI, Render):** https://xanee-api.onrender.com — documentación OpenAPI en https://xanee-api.onrender.com/docs
+- **Datos/Auth/Storage:** Supabase (Postgres + Auth + Storage).
+
+> Nota: la API está en el plan gratuito de Render, que "duerme" tras inactividad; la primera petición puede tardar ~30–50 s en despertar (arranque en frío). Registro con email/contraseña (confirmación de email desactivada para la demo).
 
 ### 0.5. URL o archivo comprimido del repositorio
 
-https://github.com/albertofojo/AI4Devs-finalproject — Rama de la Entrega 1: `feature-entrega1-AFE`.
+https://github.com/albertofojo/AI4Devs-finalproject
+- Entrega 1 (documentación): rama `feature-entrega1-AFE` — PR #1.
+- Entrega 2 (MVP funcional): rama `feature-entrega2-AFE` — PR #2.
 
 ---
 
