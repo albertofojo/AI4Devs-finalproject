@@ -35,13 +35,18 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-app.add_middleware(
-    CORSMiddleware,
+# En desarrollo, Flutter Web sirve en un puerto aleatorio de localhost; permitimos
+# cualquier localhost:<puerto> vía regex. En producción se usan los orígenes de CORS_ORIGINS.
+_cors_kwargs: dict = dict(
     allow_origins=settings.cors_origins_list,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+if settings.environment == "development":
+    _cors_kwargs["allow_origin_regex"] = r"http://(localhost|127\.0\.0\.1):\d+"
+
+app.add_middleware(CORSMiddleware, **_cors_kwargs)
 
 
 @app.get("/health", tags=["health"])
