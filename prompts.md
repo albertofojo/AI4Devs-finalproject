@@ -69,3 +69,74 @@ Registro de los **prompts más relevantes** usados con el asistente de IA (Claud
 > "Revisa los tickets y marca explícitamente como riesgo alto el del visor de partituras: integrar OpenSheetMusicDisplay (una librería JavaScript) dentro de Flutter mediante JS interop solo se puede garantizar en la versión Web. Refleja esa limitación de plataforma en los criterios de aceptación del ticket y asegúrate de que el test E2E del flujo principal contemple abrir y renderizar una partitura como paso final."
 
 **Nota de guía:** se exigió formato Gherkin y prioridad MoSCoW en las historias, y trazabilidad explícita historia↔ticket en ambos sentidos. El asistente marcó el visor MusicXML como el principal riesgo técnico del MVP y lo dejó documentado, en coherencia con la decisión de alcance tomada en la sección 1. De estos prompts salieron las secciones 5 y 6 del README.
+
+---
+
+# Entrega 2 — Implementación del MVP
+
+> A partir de aquí los prompts corresponden a la **construcción del código** (Entrega 2),
+> realizada con **Claude Code** sobre el monorepo. El estilo es más iterativo y
+> conversacional: se partió de la documentación de la Entrega 1 como especificación y se
+> fue verificando cada capa (tests, build, despliegue) antes de avanzar.
+
+## 6. Diagnóstico, alcance y backend
+
+**Prompt 6.1 — Diagnóstico honesto del punto de partida**
+> "Este es mi proyecto final de LIDR, vamos a avanzarlo; dime en qué punto está. Copia además estos ficheros de contexto al proyecto. Antes de escribir código, revisa qué hay hecho de verdad y qué falta, con espíritu crítico y sin adornar: qué entregas están cubiertas, qué fecha límite tenemos y cuál es el hueco real entre la documentación y un MVP desplegado."
+
+**Prompt 6.2 — Alineación de estrategia antes de construir**
+> "Dado que solo hay documentación y cero código, y el plazo aprieta, decide conmigo tres cosas antes de empezar: (1) stack —¿fiel al README (Flutter + FastAPI + Supabase) o algo más ligero?—, (2) alcance —¿flujo E2E completo con visor MusicXML o recortado?—, y (3) si voy a pedir prórroga. No asumas: pregúntame lo que cambie tu forma de trabajar en las próximas horas y recomiéndame la opción de menor riesgo para cada una."
+
+**Prompt 6.3 — Backend fiel al README y verificable sin servicios externos**
+> "Construye el backend FastAPI exactamente como lo describe el README (las 9 entidades, los 13 endpoints, autorización por grupo/rol, verificación del JWT de Supabase, migraciones Alembic). Clave: quiero que la suite de tests corra contra SQLite en memoria sin necesidad de un Supabase en marcha, pero que producción use Postgres cambiando solo `DATABASE_URL`. Diseña los modelos con identificadores portables para que la misma definición valga en ambos. Escribe tests unitarios y un test de integración que recorra el flujo completo, y no des nada por terminado hasta que la suite esté en verde."
+
+**Nota de guía:** se pidió al asistente un diagnóstico sin autocomplacencia (que dejó claro que faltaba **todo** el código y que la fecha de entrega estaba encima) y una alineación explícita de stack/alcance/prórroga mediante preguntas antes de teclear. La decisión fue **stack fiel al README, flujo E2E completo y con prórroga** para poder entregar con tests reales. El backend resultante arranca, expone las 13 rutas del README (más dos de listado necesarias para la UI) y pasa 14 tests pytest.
+
+---
+
+## 7. Frontend Flutter y visor MusicXML
+
+**Prompt 7.1 — App Flutter Web feature-first sobre la API**
+> "Monta el frontend en Flutter Web con organización feature-first (data/domain/presentation) tal y como anticipa el README. Autenticación con el SDK de Supabase, un cliente HTTP que adjunte el JWT a cada llamada, routing con guardas de sesión, y un repositorio único como punto de contacto con la API. Implementa las pantallas del flujo: login/registro, grupos, invitaciones, subida de partitura, setlists, ensayos y confirmación de asistencia. Deja un modo demo para poder desarrollar la UI aunque todavía no haya claves de Supabase."
+
+**Prompt 7.2 — El visor MusicXML (riesgo alto) sin romper la compilación**
+> "Implementa el visor de partituras (TK-10, el riesgo alto): renderiza MusicXML con OpenSheetMusicDisplay en Flutter Web. Hazlo robusto embebiendo la librería en un iframe con una página `osmd.html` en lugar de JS interop frágil, y —muy importante— aísla el código web-only (`dart:ui_web`, `package:web`) con imports condicionales y un stub, para que la app siga compilando y testeándose fuera de la web. Verifica que `flutter analyze` queda sin errores y que `flutter build web` compila."
+
+**Nota de guía:** el punto crítico fue que el visor usa APIs exclusivas de web que rompían la compilación en el tester estándar; se guió al asistente hacia **imports condicionales web/stub**, lo que permitió tener el visor real en producción y a la vez ejecutar los tests headless. El resultado: `flutter analyze` sin errores, build web correcto y el visor funcionando sobre partituras reales subidas a Storage.
+
+---
+
+## 8. Testing
+
+**Prompt 8.1 — Test E2E de UI ejecutable en CI**
+> "Escribe un test E2E del flujo principal sobre la UI real (login → grupo → ensayo → confirmar asistencia) usando dobles de prueba para el repositorio y la autenticación, de modo que no dependa de Supabase ni de un backend en marcha. Tiene que poder ejecutarse headless en CI, sin navegador ni dispositivo. Déjalo también bajo `integration_test/` por coherencia con la plantilla."
+
+**Prompt 8.2 — Integración continua**
+> "Configura un workflow de GitHub Actions que en cada push y PR ejecute los tests del backend (pytest) y del frontend (`flutter analyze`, `flutter test`, `flutter build web`), para que la calidad se verifique de forma automática y quede evidencia."
+
+**Nota de guía:** se priorizó que **tanto el test E2E como el CI corran sin infraestructura externa** (BD en memoria, auth simulada, tester sin navegador), de forma que la verificación sea reproducible por cualquiera que clone el repo. El flujo diferenciador del MVP queda cubierto por un test de integración de API (pytest) y un test E2E de la UI.
+
+---
+
+## 9. Integración real con Supabase y despliegue
+
+**Prompt 9.1 — Verificación de la cadena de auth real**
+> "Aquí tienes las claves reales de mi proyecto Supabase. Guárdalas solo en ficheros ignorados por git y verifica de extremo a extremo que un token real de Supabase pasa la verificación del backend: crea un usuario, haz login, y llama a `/api/me`. Si algo falla, diagnostícalo a fondo antes de proponer un parche."
+
+**Prompt 9.2 — Aprovisionar datos y almacenamiento**
+> "Conecta el backend a mi Postgres de Supabase y aplica las migraciones; si la conexión directa no resuelve, averigua por qué y usa la vía correcta. Prepara también lo necesario para que la subida de partituras a Storage funcione (bucket y políticas de acceso), y arregla los problemas de CORS que aparezcan cuando el frontend en su puerto local llame a la API."
+
+**Prompt 9.3 — Despliegue a URL pública**
+> "Despliega la API en Render con Docker desde el `render.yaml`, y la web en Vercel apuntando a la API desplegada. Verifica que la API pública responde con auth real y que el CORS permite el dominio de la web. Deja el CORS por patrón (`*.vercel.app`) para que no se rompa en cada despliegue, y rellena las URLs públicas en el README."
+
+**Nota de guía:** la integración real destapó decisiones que la documentación no anticipaba y que se resolvieron con diagnóstico, no con conjeturas: el proyecto Supabase firma los JWT con **ES256 (claves asimétricas)** y no con el secreto HS256, por lo que se cambió el backend para verificar vía **JWKS**; la conexión directa a Postgres no resolvía (solo IPv6) y se detectó automáticamente la región para usar el **pooler**; y la subida de partituras exigió **políticas RLS** de Storage. El resultado es el MVP desplegado y verificado en vivo: web en Vercel, API en Render y datos en Supabase.
+
+---
+
+> **Herramientas y método.** Todo el desarrollo se realizó con **Claude Code**, usando el
+> `README.md` de la Entrega 1 como especificación y verificando cada capa antes de avanzar
+> (tests en verde, build correcto, y comprobaciones reales contra Supabase y contra las
+> URLs desplegadas). El ajuste humano principal fue **dirigir las decisiones de alcance y
+> stack**, **exigir verificación real en cada paso** (no dar por bueno nada sin ejecutarlo)
+> y **diagnosticar en profundidad** los problemas de integración (ES256/JWKS, pooler de
+> Postgres, políticas de Storage, CORS) en lugar de aceptar parches superficiales.
